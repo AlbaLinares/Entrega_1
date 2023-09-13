@@ -1,0 +1,58 @@
+---
+title: "Entrega 1"
+format: html
+editor: visual
+---
+
+## Quarto
+
+## Running Code
+
+```{r}
+library("palmerpenguins")
+print(penguins)
+```
+```{r}
+table(penguins$species)
+```
+
+```{r}
+table(penguins$island)
+```
+```{r}
+
+mean(penguins$bill_length_mm[which(penguins$species=="Adelie")],na.rm=TRUE)
+mean(penguins$bill_length_mm[which(penguins$species=="Chinstrap")],na.rm=TRUE)
+mean(penguins$bill_length_mm[which(penguins$species=="Gentoo")],na.rm=TRUE)
+```
+```{r}
+
+mean(penguins$bill_depth_mm[which(penguins$species=="Adelie")],na.rm=TRUE)
+mean(penguins$bill_depth_mm[which(penguins$species=="Chinstrap")],na.rm=TRUE)
+mean(penguins$bill_depth_mm[which(penguins$species=="Gentoo")],na.rm=TRUE)
+```
+
+```{r}
+
+mean(penguins$flipper_length_mm[which(penguins$species=="Adelie")],na.rm=TRUE)
+mean(penguins$flipper_length_mm[which(penguins$species=="Chinstrap")],na.rm=TRUE)
+mean(penguins$flipper_length_mm[which(penguins$species=="Gentoo")],na.rm=TRUE)
+```
+
+```{r}
+
+mean(penguins$body_mass_g[which(penguins$species=="Adelie")],na.rm=TRUE)
+mean(penguins$body_mass_g[which(penguins$species=="Chinstrap")],na.rm=TRUE)
+mean(penguins$body_mass_g[which(penguins$species=="Gentoo")],na.rm=TRUE)
+```
+
+```{r}
+table(penguins$sex)
+```
+
+
+
+
+
+
+
