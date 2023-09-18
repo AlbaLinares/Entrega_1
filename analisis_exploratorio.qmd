@@ -8,51 +8,75 @@ editor: visual
 
 ## Running Code
 
+En primer lloc imprimim la taula per observar les dades.
+
 ```{r}
 library("palmerpenguins")
 print(penguins)
 ```
+
+Notem que tenim 344 observacions que depenen de 8 variables diferents: espècie, illa, logitut del bec, profunditat del bec, logitut de l'aleta, massa del cos, sexe, any.
+
+Anem a estudiar-les. En primer lloc vegem quin tipus de variables són i analitzem-les en conseqüència.
+
+```{r}
+class(penguins$species)
+class(penguins$island)
+```
+
+Notem que les variables "espècie" i "illa" són variables qualitatives per tant podem fer una taula de freqüències relatives.
+
 ```{r}
 table(penguins$species)
+prop.table(table(penguins$species))
 ```
 
 ```{r}
 table(penguins$island)
-```
-```{r}
-
-mean(penguins$bill_length_mm[which(penguins$species=="Adelie")],na.rm=TRUE)
-mean(penguins$bill_length_mm[which(penguins$species=="Chinstrap")],na.rm=TRUE)
-mean(penguins$bill_length_mm[which(penguins$species=="Gentoo")],na.rm=TRUE)
-```
-```{r}
-
-mean(penguins$bill_depth_mm[which(penguins$species=="Adelie")],na.rm=TRUE)
-mean(penguins$bill_depth_mm[which(penguins$species=="Chinstrap")],na.rm=TRUE)
-mean(penguins$bill_depth_mm[which(penguins$species=="Gentoo")],na.rm=TRUE)
+prop.table(table(penguins$island))
 ```
 
 ```{r}
+class(penguins$species)
+class(penguins$island)
+```
 
-mean(penguins$flipper_length_mm[which(penguins$species=="Adelie")],na.rm=TRUE)
-mean(penguins$flipper_length_mm[which(penguins$species=="Chinstrap")],na.rm=TRUE)
-mean(penguins$flipper_length_mm[which(penguins$species=="Gentoo")],na.rm=TRUE)
+Notem que les variables "logitut del bec", "profunditat del bec", "logitut de l'aleta" i "massa del cos" són variables quantitatives per tant podem fer boxplots per veure de forma més clara la distribució de les dades. Estudiarem aquestes dades en funció de l'espècie.
+
+```{r}
+boxplot(penguins$bill_length_mm[which(penguins$species=="Adelie")], penguins$bill_length_mm[which(penguins$species=="Chinstrap")], penguins$bill_length_mm[which(penguins$species=="Gentoo")], names= c("Adelie", "Chinstrap","Gentoo"), xlab= "espècie", ylab= "longitut del bec(mm)")
 ```
 
 ```{r}
-
-mean(penguins$body_mass_g[which(penguins$species=="Adelie")],na.rm=TRUE)
-mean(penguins$body_mass_g[which(penguins$species=="Chinstrap")],na.rm=TRUE)
-mean(penguins$body_mass_g[which(penguins$species=="Gentoo")],na.rm=TRUE)
+boxplot(penguins$bill_depth_mm[which(penguins$species=="Adelie")], penguins$bill_depth_mm[which(penguins$species=="Chinstrap")], penguins$bill_depth_mm[which(penguins$species=="Gentoo")], names= c("Adelie", "Chinstrap","Gentoo"), xlab= "espècie", ylab= "profunditat del bec(mm)")
 ```
+
+```{r}
+boxplot(penguins$flipper_length_mm[which(penguins$species=="Adelie")], penguins$flipper_length_mm[which(penguins$species=="Chinstrap")], penguins$flipper_length_mm[which(penguins$species=="Gentoo")], names= c("Adelie", "Chinstrap","Gentoo"), xlab= "espècie", ylab= "longitut de l'aleta(mm)")
+```
+
+```{r}
+boxplot(penguins$body_mass_g[which(penguins$species=="Adelie")], penguins$body_mass_g[which(penguins$species=="Chinstrap")], penguins$body_mass_g[which(penguins$species=="Gentoo")], names= c("Adelie", "Chinstrap","Gentoo"), xlab= "espècie", ylab= "massa del cos(g)")
+```
+
+```{r}
+class(penguins$sex)
+```
+
+Notem que la variable "sex" és una variable qualitativa i podem fer una taula de freqüències.
 
 ```{r}
 table(penguins$sex)
+prop.table(table(penguins$sex))
 ```
 
+```{r}
+class(penguins$year)
+range(penguins$year)
+```
 
+Considerarem l'any com una variable ordinal
 
-
-
-
-
+```{r}
+prop.table(table(penguins$year))
+```
