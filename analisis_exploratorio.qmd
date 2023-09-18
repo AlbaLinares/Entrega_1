@@ -15,7 +15,7 @@ library("palmerpenguins")
 print(penguins)
 ```
 
-Notem que tenim 344 observacions que depenen de 8 variables diferents: espècie, illa, logitut del bec, profunditat del bec, logitut de l'aleta, massa del cos, sexe, any.
+Notem que tenim 344 observacions que depenen de 8 variables diferents: espècie, illa, longitut del bec, profunditat del bec, logitut de l'aleta, massa del cos, sexe, any.
 
 Anem a estudiar-les. En primer lloc vegem quin tipus de variables són i analitzem-les en conseqüència.
 
@@ -24,7 +24,7 @@ class(penguins$species)
 class(penguins$island)
 ```
 
-Notem que les variables "espècie" i "illa" són variables qualitatives per tant podem fer una taula de freqüències relatives.
+Notem que les variables "espècie" i "illa" són variables qualitatives i, per tant, podem fer una taula de freqüències relatives.
 
 ```{r}
 table(penguins$species)
@@ -58,6 +58,50 @@ boxplot(penguins$flipper_length_mm[which(penguins$species=="Adelie")], penguins$
 ```{r}
 boxplot(penguins$body_mass_g[which(penguins$species=="Adelie")], penguins$body_mass_g[which(penguins$species=="Chinstrap")], penguins$body_mass_g[which(penguins$species=="Gentoo")], names= c("Adelie", "Chinstrap","Gentoo"), xlab= "espècie", ylab= "massa del cos(g)")
 ```
+
+Ara, estudiarem les variables logitut del bec, profunditat del bec, logitut de l'aleta i massa del cos en funció de la illa.
+
+```{r}
+boxplot(penguins$bill_length_mm[which(penguins$island=="Biscoe")], penguins$bill_length_mm[which(penguins$island=="Dream")], penguins$bill_length_mm[which(penguins$island=="Torgersen")], names= c("Biscoe", "Dream ","Torgersen"), xlab= "Illa", ylab= "longitut del bec(mm)")
+```
+
+```{r}
+boxplot(penguins$bill_depth_mm[which(penguins$island=="Biscoe")], penguins$bill_depth_mm[which(penguins$island=="Dream")], penguins$bill_depth_mm[which(penguins$island=="Torgersen")], names= c("Biscoe", "Dream ","Torgersen"), xlab= "Illa", ylab= "profunditat del bec(mm)")
+```
+
+```{r}
+boxplot(penguins$flipper_length_mm[which(penguins$island=="Biscoe")], penguins$flipper_length_mm[which(penguins$island=="Dream")], penguins$flipper_length_mm[which(penguins$island=="Torgersen")], names= c("Biscoe", "Dream ","Torgersen"), xlab= "Illa", ylab= "Longitud de l'aleta (mm)")
+
+```
+
+```{r}
+boxplot(penguins$body_mass_g[which(penguins$island=="Biscoe")], penguins$body_mass_g[which(penguins$island=="Dream")], penguins$body_mass_g[which(penguins$island=="Torgersen")], names= c("Biscoe", "Dream ","Torgersen"), xlab= "Illa", ylab= "Massa del cos (g)")
+```
+
+Vegem ara, respecte cada illa i cada any que es realitza l'experiment, quina és la proporció d'espècies:
+
+```{r}
+prop.table(table(penguins$species[which(penguins$island=="Biscoe" & penguins$year=="2007")]))
+prop.table(table(penguins$species[which(penguins$island=="Biscoe" & penguins$year=="2008")]))
+prop.table(table(penguins$species[which(penguins$island=="Biscoe" & penguins$year=="2009")]))
+
+```
+
+```{r}
+prop.table(table(penguins$species[which(penguins$island=="Dream" & penguins$year=="2007")]))
+prop.table(table(penguins$species[which(penguins$island=="Dream" & penguins$year=="2008")]))
+prop.table(table(penguins$species[which(penguins$island=="Dream" & penguins$year=="2009")]))
+
+```
+
+```{r}
+prop.table(table(penguins$species[which(penguins$island=="Torgersen" & penguins$year=="2007")]))
+prop.table(table(penguins$species[which(penguins$island=="Torgersen" & penguins$year=="2008")]))
+prop.table(table(penguins$species[which(penguins$island=="Torgersen" & penguins$year=="2009")]))
+
+```
+
+Notem que a la tercera illa no varia ...
 
 ```{r}
 class(penguins$sex)
