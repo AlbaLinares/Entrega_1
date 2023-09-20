@@ -4,9 +4,7 @@ format: html
 editor: visual
 ---
 
-## Quarto
-
-## Running Code
+## 
 
 En primer lloc imprimim la taula per a observar les dades.
 
@@ -15,159 +13,187 @@ library("palmerpenguins")
 print(penguins)
 ```
 
-Notem que tenim 344 observacions que depenen de 8 variables diferents: espècie, illa, longitut del bec, profunditat del bec, logitut de l'aleta, massa del cos, sexe, any.
+# Descripció de la taula de dades
+Notem que tenim 344 observacions que depenen de 8 variables diferents: 
 
-Anem a estudiar cada una de les variables per separat. En primer lloc, vegem quins tipus de variables són (amb ajuda de la funció class) i analitzem-les en conseqüència.
+* espècie: variable qualitativa
 
-```{r, echo = TRUE}
-class(penguins$species)
-class(penguins$island)
-```
+* illa: variable qualitativa
 
+* longitut del bec: variable quantitativa
+
+* profunditat del bec: variable quantitativa
+
+* logitut de l'aleta: variable quantitativa
+
+* massa del cos: variable quantitativa
+
+* sexe: variable qualitativa
+
+* any de l'experiment: es tracta d'un enter, però el tractarem com una variable qualitativa 
+
+Anem a estudiar cada una de les variables per separat.
+
+# Distribució de la població
 Notem que les variables espècie i illa són variables qualitatives i, per tant, podem fer una taula de freqüències relatives segons l'espècie i una altre segons l'illa.
 
-```{r, echo = TRUE}
-table(penguins$species)
-prop.table(table(penguins$species))
+## En funció de l'espècie
+
+```{r, echo = FALSE}
+pie(prop.table(table(penguins$species)), labels = c("Adelie(44.1%)", "Chinstrap(19.7%)","Gentoo(36%)"))
+
 ```
 
 Notem que gairebé la meitat dels pinguins de l'estudi són Adelie.
 
-```{r, echo = TRUE}
-table(penguins$island)
-prop.table(table(penguins$island))
+## En funció de la illa de procedència
+
+```{r, echo = FALSE}
+pie(prop.table(table(penguins$island)), labels = c(" Biscoe(48.8%)", "Dream(36%)","Gentoo(15%)"))
 ```
 
 Notem que gairebé la meitat dels pinguins de l'estudi es troben a l'illa Biscoe.
 
-```{r, echo = TRUE}
-class(penguins$bill_length_mm)
-class(penguins$bill_depth_mm)
-class(penguins$flipper_length_mm)
-class(penguins$body_mass_g)
-```
-
+# Característiques de la població
 Notem que les variables logitut del bec, profunditat del bec, logitut de l'aleta i massa del cos són variables quantitatives. Usarem la funció summary per veure la informació més rellevant (com no ens mostra la desviació típica, la calcularem apart) a més usarem boxplots en funció de l'espècie per a veure de forma més clara la distribució de les dades.
 
-```{r, echo = TRUE}
+## Longitud del bec
+
+A continuació tenim un resum en funció d'aquesta variable.
+```{r, echo = FALSE}
 summary(penguins$bill_length_mm)
-sd(penguins$bill_length_mm, na.rm = TRUE)
+```
+Calculem a part la desviació típica.
+```{r, echo = FALSE}
+cat("sd =", sd(penguins$bill_length_mm, na.rm = TRUE))
 ```
 
 Notem que la longitud del bec en general no varia molt. Vegem què passa espècie per espècie i llavors, amb un boxplot podrem comparar més fàcilment:
-
-```{r, echo = TRUE}
+Adelie:
+```{r, echo = FALSE}
 summary(penguins$bill_length_mm[which(penguins$species=="Adelie")])
-sd(penguins$bill_length_mm[which(penguins$species=="Adelie")], na.rm = TRUE)
+cat("sd =", sd(penguins$bill_length_mm[which(penguins$species=="Adelie")], na.rm = TRUE))
 ```
-
-```{r, echo = TRUE}
+Chinstrap:
+```{r, echo = FALSE}
 summary(penguins$bill_length_mm[which(penguins$species=="Chinstrap")])
-sd(penguins$bill_length_mm[which(penguins$species=="Chinstrap")], na.rm = TRUE)
+cat("sd =", sd(penguins$bill_length_mm[which(penguins$species=="Chinstrap")], na.rm = TRUE))
 ```
-
-```{r, echo = TRUE}
+Gentoo:
+```{r, echo = FALSE}
 summary(penguins$bill_length_mm[which(penguins$species=="Gentoo")])
-sd(penguins$bill_length_mm[which(penguins$species=="Gentoo")], na.rm = TRUE)
+cat("sd =", sd(penguins$bill_length_mm[which(penguins$species=="Gentoo")], na.rm = TRUE))
 
 ```
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 boxplot(penguins$bill_length_mm[which(penguins$species=="Adelie")], penguins$bill_length_mm[which(penguins$species=="Chinstrap")], penguins$bill_length_mm[which(penguins$species=="Gentoo")], names= c("Adelie", "Chinstrap","Gentoo"), xlab= "espècie", ylab= "longitut del bec(mm)")
 ```
 
 Podem deduir que els pinguins de l'espècie Chinstrap solen tenir el bec més llarg que els pinguins de les altres espècies, però dins la mateixa espècie trobem més diversitat. A més, les llargàries dels becs dels pingüins Chinstrap i Gentoo són, en general, més grans que les dels Adelie.
 
+## Profunditat del bec
+
 Ara farem exactament la mateixa anàlisi amb la profunditat del bec.
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 summary(penguins$bill_depth_mm)
-sd(penguins$bill_depth_mm, na.rm = TRUE)
+```
+
+i calculam la desviació típica apart
+```{r, echo = FALSE}
+cat("sd =", sd(penguins$bill_depth_mm, na.rm = TRUE))
 ```
 
 Notem que en aquest cas, la profunditat varia molt manco que la llargària del bec (el rang que prenen les variables és de 8mm i la desviació típica no és molt gran). Vegem-ho ara per espècies:
 
-```{r, echo = TRUE}
+Adelie:
+```{r, echo = FALSE}
 summary(penguins$bill_depth_mm[which(penguins$species=="Adelie")])
-sd(penguins$bill_depth_mm[which(penguins$species=="Adelie")], na.rm = TRUE)
-```
+cat("sd =", sd(penguins$bill_depth_mm[which(penguins$species=="Adelie")], na.rm = TRUE))
 
-```{r, echo = TRUE}
+```
+Chinstrap:
+```{r, echo = FALSE}
 summary(penguins$bill_depth_mm[which(penguins$species=="Chinstrap")])
 sd(penguins$bill_depth_mm[which(penguins$species=="Chinstrap")], na.rm = TRUE)
 
 ```
-
-```{r, echo = TRUE}
+Gentoo:
+```{r, echo = FALSE}
 summary(penguins$bill_depth_mm[which(penguins$species=="Gentoo")])
-sd(penguins$bill_depth_mm[which(penguins$species=="Gentoo")], na.rm = TRUE)
+cat("sd =", sd(penguins$bill_depth_mm[which(penguins$species=="Gentoo")], na.rm = TRUE))
 
 ```
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 boxplot(penguins$bill_depth_mm[which(penguins$species=="Adelie")], penguins$bill_depth_mm[which(penguins$species=="Chinstrap")], penguins$bill_depth_mm[which(penguins$species=="Gentoo")], names= c("Adelie", "Chinstrap","Gentoo"), xlab= "espècie", ylab= "profunditat del bec(mm)")
 ```
 
 Observem també que els pinguins de les espècies Chinstrap i Adelie solen tenir el bec una mica més profund. Ara bé, dins els Adelie, trobem més diversitat (profunditats diferents). Als Gentoo trobem becs manco profunds i més semblants entre ells.
 
+## Longitud de l'aleta
+
 Estudiem ara com són les aletes dels pingüins de l'estudi.
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 summary(penguins$flipper_length_mm)
 sd(penguins$flipper_length_mm, na.rm = TRUE)
 ```
 
 En aquest cas, veim que sí que hi ha més diferències: trobem que el rang d'aquesta variable són 5.9 cm i la desviació típica és prou gran. De nou, estudiem-ho espècie per espècie:
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 summary(penguins$flipper_length_mm[which(penguins$species=="Adelie")])
 sd(penguins$flipper_length_mm[which(penguins$species=="Adelie")], na.rm = TRUE)
 
 ```
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 summary(penguins$flipper_length_mm[which(penguins$species=="Chinstrap")])
 sd(penguins$flipper_length_mm[which(penguins$species=="Chinstrap")], na.rm = TRUE)
 
 ```
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 summary(penguins$flipper_length_mm[which(penguins$species=="Gentoo")])
 sd(penguins$flipper_length_mm[which(penguins$species=="Gentoo")], na.rm = TRUE)
 
 ```
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 boxplot(penguins$flipper_length_mm[which(penguins$species=="Adelie")], penguins$flipper_length_mm[which(penguins$species=="Chinstrap")], penguins$flipper_length_mm[which(penguins$species=="Gentoo")], names= c("Adelie", "Chinstrap","Gentoo"), xlab= "espècie", ylab= "longitut de l'aleta(mm)")
 ```
 
 Notem que els pinguins de l'espècie Gentoo de mitjana tenen l'aleta més de 10 centímetres més llarga que les altres espècies. A més, es tracta de l'espècie que, en general, les aletes d'individus diferents són més semblants. En canvi, als Adelie i Chinstrap trobem més diversitat d'aletes.
 
+## Masses dels pingüins
+
 Estudiem, ara, les masses dels pingüins.
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 summary(penguins$body_mass_g)
 sd(penguins$body_mass_g, na.rm = TRUE)
 ```
 
 En aquest cas, el rang és de 3.6 kg i la desviació típica és bastant gran: de nou, vegem com són les masses de cada espècie.
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 summary(penguins$body_mass_g[which(penguins$species=="Adelie")])
 sd(penguins$body_mass_g[which(penguins$species=="Adelie")], na.rm = TRUE)
 ```
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 summary(penguins$body_mass_g[which(penguins$species=="Chinstrap")])
 sd(penguins$body_mass_g[which(penguins$species=="Chinstrap")], na.rm = TRUE)
 ```
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 summary(penguins$body_mass_g[which(penguins$species=="Gentoo")])
 sd(penguins$body_mass_g[which(penguins$species=="Gentoo")], na.rm = TRUE)
 ```
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 boxplot(penguins$body_mass_g[which(penguins$species=="Adelie")], penguins$body_mass_g[which(penguins$species=="Chinstrap")], penguins$body_mass_g[which(penguins$species=="Gentoo")], names= c("Adelie", "Chinstrap","Gentoo"), xlab= "espècie", ylab= "massa del cos(g)")
 ```
 
@@ -175,20 +201,20 @@ Notem que els pingüins de l'espècie Gentoo de mitjana pesen 2 Kg més que els 
 
 Ara, estudiarem les variables logitut del bec, profunditat del bec, logitut de l'aleta i massa del cos en funció de la illa.
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 boxplot(penguins$bill_length_mm[which(penguins$island=="Biscoe")], penguins$bill_length_mm[which(penguins$island=="Dream")], penguins$bill_length_mm[which(penguins$island=="Torgersen")], names= c("Biscoe", "Dream ","Torgersen"), xlab= "Illa", ylab= "longitut del bec(mm)")
 ```
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 boxplot(penguins$bill_depth_mm[which(penguins$island=="Biscoe")], penguins$bill_depth_mm[which(penguins$island=="Dream")], penguins$bill_depth_mm[which(penguins$island=="Torgersen")], names= c("Biscoe", "Dream ","Torgersen"), xlab= "Illa", ylab= "profunditat del bec(mm)")
 ```
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 boxplot(penguins$flipper_length_mm[which(penguins$island=="Biscoe")], penguins$flipper_length_mm[which(penguins$island=="Dream")], penguins$flipper_length_mm[which(penguins$island=="Torgersen")], names= c("Biscoe", "Dream ","Torgersen"), xlab= "Illa", ylab= "Longitud de l'aleta (mm)")
 
 ```
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 boxplot(penguins$body_mass_g[which(penguins$island=="Biscoe")], penguins$body_mass_g[which(penguins$island=="Dream")], penguins$body_mass_g[which(penguins$island=="Torgersen")], names= c("Biscoe", "Dream ","Torgersen"), xlab= "Illa", ylab= "Massa del cos (g)")
 ```
 
@@ -196,7 +222,7 @@ Vegem ara, respecte cada illa i cada any que es realitza l'experiment, quina és
 
 Comencem per Biscoe:
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 prop.table(table(penguins$species[which(penguins$island=="Biscoe" & penguins$year=="2007")]))
 prop.table(table(penguins$species[which(penguins$island=="Biscoe" & penguins$year=="2008")]))
 prop.table(table(penguins$species[which(penguins$island=="Biscoe" & penguins$year=="2009")]))
@@ -207,7 +233,7 @@ Cal notar que a l'estudi no trobem cap exemplar de Chinstrap, independentment de
 
 Ara estudiem la població de Dream:
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 prop.table(table(penguins$species[which(penguins$island=="Dream" & penguins$year=="2007")]))
 prop.table(table(penguins$species[which(penguins$island=="Dream" & penguins$year=="2008")]))
 prop.table(table(penguins$species[which(penguins$island=="Dream" & penguins$year=="2009")]))
@@ -218,7 +244,7 @@ Observem que cap dels pinguins de l'estudi que habiten a Dream són Gentoo indep
 
 Finalment, estudiem Torgersen:
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 prop.table(table(penguins$species[which(penguins$island=="Torgersen" & penguins$year=="2007")]))
 prop.table(table(penguins$species[which(penguins$island=="Torgersen" & penguins$year=="2008")]))
 prop.table(table(penguins$species[which(penguins$island=="Torgersen" & penguins$year=="2009")]))
@@ -229,13 +255,13 @@ Notem que tots els pinguins de l'estudi que habiten a Torgersen són Adelie inde
 
 Estudiem ara la variable sexe.
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 class(penguins$sex)
 ```
 
 Notem que la variable "sex" és una variable qualitativa i podem fer una taula de freqüències.
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 prop.table(table(penguins$sex))
 ```
 
@@ -243,13 +269,13 @@ Està bastant igualat el nombre de pinguins de cada sexe que s'han seleccionat p
 
 Estudiem la variable any de l'esperiment.
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 class(penguins$year)
 ```
 
 Considerarem l'any com una variable qualitativa, és a dir, com un atribut del pingüí. Per aquest motiu, estudiarem les seves freqüències relatives:
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 prop.table(table(penguins$year))
 ```
 
