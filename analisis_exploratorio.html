@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Alba Linares i Maria Àngels Llobera">
+
+<title>Entrega 1: Anàlisi exploratòria amb R base</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="analisis_exploratorio_files/libs/clipboard/clipboard.min.js"></script>
+<script src="analisis_exploratorio_files/libs/quarto-html/quarto.js"></script>
+<script src="analisis_exploratorio_files/libs/quarto-html/popper.min.js"></script>
+<script src="analisis_exploratorio_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="analisis_exploratorio_files/libs/quarto-html/anchor.min.js"></script>
+<link href="analisis_exploratorio_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="analisis_exploratorio_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="analisis_exploratorio_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="analisis_exploratorio_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="analisis_exploratorio_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Entrega 1: Anàlisi exploratòria amb R base</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Alba Linares i Maria Àngels Llobera </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>En primer lloc, l’enllaç al repositori d’aquesta tasca és aquest: <a href="https://github.com/AlbaLinares/Entrega_1.git" class="uri">https://github.com/AlbaLinares/Entrega_1.git</a></p>
+<p>Ara, imprimim la taula per a observar les dades.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 8
+   species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Torgersen           39.1          18.7               181        3750
+ 2 Adelie  Torgersen           39.5          17.4               186        3800
+ 3 Adelie  Torgersen           40.3          18                 195        3250
+ 4 Adelie  Torgersen           NA            NA                  NA          NA
+ 5 Adelie  Torgersen           36.7          19.3               193        3450
+ 6 Adelie  Torgersen           39.3          20.6               190        3650
+ 7 Adelie  Torgersen           38.9          17.8               181        3625
+ 8 Adelie  Torgersen           39.2          19.6               195        4675
+ 9 Adelie  Torgersen           34.1          18.1               193        3475
+10 Adelie  Torgersen           42            20.2               190        4250
+# ℹ 334 more rows
+# ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
+</div>
+</div>
+<section id="descripció-de-la-taula-de-dades" class="level1">
+<h1>Descripció de la taula de dades</h1>
+<p>Notem que tenim 344 observacions que depenen de 8 variables diferents:</p>
+<ul>
+<li><p>espècie: variable qualitativa amb 3 possibles nivells (Adelie, Chinstrap, Gentoo)</p></li>
+<li><p>illa: variable qualitativa amb 3 possibles resultats (Biscoe, Dream o Torgersen)</p></li>
+<li><p>longitut del bec: variable quantitativa</p></li>
+<li><p>profunditat del bec: variable quantitativa</p></li>
+<li><p>logitut de l’aleta: variable quantitativa</p></li>
+<li><p>massa del cos: variable quantitativa</p></li>
+<li><p>sexe: variable qualitativa dicotòmica (pren els valors mascle o femella)</p></li>
+<li><p>any de l’experiment: es tracta d’un enter, però el tractarem com una variable qualitativa. Pot ser un dels següents valors: 2007, 2008 o 2009</p></li>
+</ul>
+<p>Anem a estudiar cada una de les variables per separat.</p>
+</section>
+<section id="distribució-de-la-població" class="level1">
+<h1>Distribució de la població</h1>
+<p>Notem que les variables espècie i illa són variables qualitatives i, per tant, podem fer una taula de freqüències relatives segons l’espècie i una altra segons l’illa.</p>
+<section id="en-funció-de-lespècie" class="level2">
+<h2 class="anchored" data-anchor-id="en-funció-de-lespècie">En funció de l’espècie</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analisis_exploratorio_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Notem que gairebé la meitat dels pinguins de l’estudi són Adelie.</p>
+</section>
+<section id="en-funció-de-la-illa-de-procedència" class="level2">
+<h2 class="anchored" data-anchor-id="en-funció-de-la-illa-de-procedència">En funció de la illa de procedència</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analisis_exploratorio_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Cal notar que gairebé la meitat dels pinguins de l’estudi es troben a l’illa Biscoe.</p>
+</section>
+</section>
+<section id="característiques-de-la-població" class="level1">
+<h1>Característiques de la població</h1>
+<p>Ara, tenim que les variables logitut del bec, profunditat del bec, logitut de l’aleta i massa del cos són variables quantitatives. Usarem la funció summary per veure la informació més rellevant (com no ens mostra la desviació típica, la calcularem apart). A més, usarem boxplots en funció de l’espècie per a veure de forma més clara la distribució de les dades.</p>
+<section id="en-funció-de-lespècie-1" class="level2">
+<h2 class="anchored" data-anchor-id="en-funció-de-lespècie-1">En funció de l’espècie</h2>
+<section id="longitud-del-bec" class="level3">
+<h3 class="anchored" data-anchor-id="longitud-del-bec">Longitud del bec</h3>
+<p>A continuació, tenim un resum en funció d’aquesta variable.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  32.10   39.23   44.45   43.92   48.50   59.60       2 </code></pre>
+</div>
+</div>
+<p>Calculem, a part, la desviació típica.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>sd = 5.459584</code></pre>
+</div>
+</div>
+<p>Notem que la longitud del bec en general no varia molt. Vegem què passa espècie per espècie i llavors, amb un boxplot podrem comparar més fàcilment:</p>
+<ul>
+<li>Adelie:</li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  32.10   36.75   38.80   38.79   40.75   46.00       1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sd = 2.663405</code></pre>
+</div>
+</div>
+<ul>
+<li>Chinstrap:</li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  40.90   46.35   49.55   48.83   51.08   58.00 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sd = 3.339256</code></pre>
+</div>
+</div>
+<ul>
+<li>Gentoo:</li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  40.90   45.30   47.30   47.50   49.55   59.60       1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sd = 3.081857</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analisis_exploratorio_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Podem deduir que els pinguins de l’espècie Chinstrap solen tenir el bec més llarg que els pinguins de les altres espècies, però dins la mateixa espècie trobem més diversitat. A més, les llargàries dels becs dels pingüins Chinstrap i Gentoo són, en general, més grans que les dels Adelie.</p>
+</section>
+<section id="profunditat-del-bec" class="level3">
+<h3 class="anchored" data-anchor-id="profunditat-del-bec">Profunditat del bec</h3>
+<p>Ara farem exactament la mateixa anàlisi amb la profunditat del bec.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  13.10   15.60   17.30   17.15   18.70   21.50       2 </code></pre>
+</div>
+</div>
+<p>i calculam la desviació típica apart</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>sd = 1.974793</code></pre>
+</div>
+</div>
+<p>Notem que, en aquest cas, la profunditat varia molt manco que la llargària del bec (el rang que prenen les variables és de 8mm i la desviació típica no és molt gran). Vegem-ho ara per espècies:</p>
+<ul>
+<li>Adelie:</li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  15.50   17.50   18.40   18.35   19.00   21.50       1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sd = 1.21665</code></pre>
+</div>
+</div>
+<ul>
+<li>Chinstrap:</li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  16.40   17.50   18.45   18.42   19.40   20.80 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sd =  1.135395</code></pre>
+</div>
+</div>
+<ul>
+<li>Gentoo:</li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  13.10   14.20   15.00   14.98   15.70   17.30       1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sd = 0.9812198</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analisis_exploratorio_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Observem, també, que els pinguins de les espècies Chinstrap i Adelie solen tenir el bec una mica més profund. Ara bé, dins els Adelie, trobem més diversitat (profunditats diferents). Als Gentoo trobem becs manco profunds i més semblants entre ells.</p>
+</section>
+<section id="longitud-de-laleta" class="level3">
+<h3 class="anchored" data-anchor-id="longitud-de-laleta">Longitud de l’aleta</h3>
+<p>Estudiem ara com són les aletes dels pingüins de l’estudi.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  172.0   190.0   197.0   200.9   213.0   231.0       2 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sd=  14.06171</code></pre>
+</div>
+</div>
+<p>En aquest cas, veim que sí que hi ha més diferències: trobem que el rang d’aquesta variable són 5.9 cm i la desviació típica és prou gran. De nou, estudiem-ho espècie per espècie:</p>
+<ul>
+<li>Adelie:</li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+    172     186     190     190     195     210       1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sd = 6.539457</code></pre>
+</div>
+</div>
+<ul>
+<li>Chinstrap:</li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  178.0   191.0   196.0   195.8   201.0   212.0 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sd=  7.131894</code></pre>
+</div>
+</div>
+<ul>
+<li>Gentoo:</li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  203.0   212.0   216.0   217.2   221.0   231.0       1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sd = 6.484976</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analisis_exploratorio_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Notem que els pinguins de l’espècie Gentoo de mitjana tenen l’aleta més de 10 centímetres més llarga que les altres espècies. A més, es tracta de l’espècie que, en general, les aletes d’individus diferents són més semblants. En canvi, als Adelie i Chinstrap trobem més diversitat d’aletes.</p>
+</section>
+<section id="masses-dels-pingüins" class="level3">
+<h3 class="anchored" data-anchor-id="masses-dels-pingüins">Masses dels pingüins</h3>
+<p>Estudiem, ara, les masses dels pingüins.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+   2700    3550    4050    4202    4750    6300       2 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sd = 801.9545</code></pre>
+</div>
+</div>
+<p>En aquest cas, el rang és de 3.6 kg i la desviació típica és bastant gran: de nou, vegem com són les masses de cada espècie. * Adelie:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+   2850    3350    3700    3701    4000    4775       1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sd = 458.5661</code></pre>
+</div>
+</div>
+<ul>
+<li>Chinstrap:</li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   2700    3488    3700    3733    3950    4800 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sd = 384.3351</code></pre>
+</div>
+</div>
+<ul>
+<li>Gentoo:</li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+   3950    4700    5000    5076    5500    6300       1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sd = 504.1162</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analisis_exploratorio_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Notem que els pingüins de l’espècie Gentoo de mitjana pesen 2 kg més que els de les altres espècies. A més, els pesos dels Adelie i Chinstrap s’assemblen més que els dels Gentoo. Els pesos manco dispersos són els dels Chinstrap.</p>
+</section>
+</section>
+<section id="en-funció-de-la-illa-de-procedència-1" class="level2">
+<h2 class="anchored" data-anchor-id="en-funció-de-la-illa-de-procedència-1">En funció de la illa de procedència</h2>
+<p>Ara, estudiarem les variables logitut del bec, profunditat del bec, logitut de l’aleta i massa del cos en funció de la illa.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analisis_exploratorio_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analisis_exploratorio_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analisis_exploratorio_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analisis_exploratorio_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>En aquest cas, vegem que els pingüins de la illa de Biscoe tenen, de mitjana, els becs i les aletes més llargues, a més de pesar més. Els seus becs són manco profunds, en general. Ara bé, la població és la que més varia.</p>
+<p>Respecte a l’illa de Dream, la variable més heterogènea és la de longitud del bec. La població també és prou plural, però no trobem tanta diversitat com a la primera illa.</p>
+<p>A Torgersen, la població és més homogènia que a les altres illes. A més, els pingüins d’aquesta illa es caracteritzen per tenir els becs i les aletes més curtes i pesar manco que els les altres illes, de mitjana. En canvi, els seus becs acostumen a ser més profunds.</p>
+</section>
+</section>
+<section id="evolució-de-les-comunitats-de-cada-illa" class="level1">
+<h1>Evolució de les comunitats de cada illa</h1>
+<p>Vegem ara, respecte cada illa i cada any que es realitza l’experiment (entre el 2007 i el 2009), quina és la proporció d’espècies:</p>
+<p>Comencem per Biscoe:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   Adelie Chinstrap    Gentoo 
+0.2272727 0.0000000 0.7727273 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   Adelie Chinstrap    Gentoo 
+  0.28125   0.00000   0.71875 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   Adelie Chinstrap    Gentoo 
+0.2666667 0.0000000 0.7333333 </code></pre>
+</div>
+</div>
+<p>Cal notar que a l’estudi no trobem cap exemplar de Chinstrap, independentment de l’any que es realitza l’estudi.</p>
+<p>Ara estudiem la població de Dream:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   Adelie Chinstrap    Gentoo 
+0.4347826 0.5652174 0.0000000 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   Adelie Chinstrap    Gentoo 
+0.4705882 0.5294118 0.0000000 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   Adelie Chinstrap    Gentoo 
+0.4545455 0.5454545 0.0000000 </code></pre>
+</div>
+</div>
+<p>Observem que cap dels pinguins de l’estudi que habiten a Dream són Gentoo independentment de l’any de l’estudi.</p>
+<p>Finalment, estudiem Torgersen:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   Adelie Chinstrap    Gentoo 
+        1         0         0 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   Adelie Chinstrap    Gentoo 
+        1         0         0 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   Adelie Chinstrap    Gentoo 
+        1         0         0 </code></pre>
+</div>
+</div>
+<p>Notem que tots els pinguins de l’estudi que habiten a Torgersen són Adelie independentment de l’any de l’estudi.</p>
+<p>Estudiem ara la variable sexe: recordem que la variable “sex” és una variable dicotòmica i podem fer una taula de freqüències:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   female      male 
+0.4954955 0.5045045 </code></pre>
+</div>
+</div>
+<p>Està bastant igualat el nombre de pinguins de cada sexe que s’han seleccionat per l’estudi.</p>
+<p>Estudiem la variable any de l’esperiment: com ja hem anticipat, considerarem l’any com una variable qualitativa, és a dir, com un atribut del pingüí. Per aquest motiu, estudiarem les seves freqüències relatives:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+     2007      2008      2009 
+0.3197674 0.3313953 0.3488372 </code></pre>
+</div>
+</div>
+<p>A la taula de freqüències anterior podem veure la proporció d’unitats mostrals en funció de l’any de l’esperiment, la qual és bastant equilibrada.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
